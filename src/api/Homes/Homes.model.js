@@ -13,7 +13,7 @@ const homeSchema = new Schema(
             match: [priceRegex, 'Ingrese un precio valido superior a 0.00']
         },
         comments: {
-            //model comments
+            //model comments obligatorio usuario y home
         },
         images:{
             type: String,
@@ -25,7 +25,7 @@ const homeSchema = new Schema(
             required: [true, 'Debe ingresar las comodidades del inmueble.']
         },
         score:{
-            // model score
+            // model score obligatorio usuario y home
         },
         capacity:{
             type: String,
