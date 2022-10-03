@@ -1,8 +1,61 @@
 const { create } = require('./Users.model');
 const User = require('./Users.model');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
   //get all
+
+  async singup(req, res, next) {
+    try {
+      const data = req.body;
+
+      //brcypt recibe (password,Salto)
+      const encPassword = await bcrypt.hash(data.password, 8);
+
+      const newUser = {
+        ...data,
+        password: encPassword,
+      };
+
+      const user = await User.create(newUser);
+
+      const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
+        expiresIn: 60 * 60 * 24,
+      });
+
+      res.status(200).json({ message: 'User created', data: email, token });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async singin(req, res) {
+    try {
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
+      console.log(user);
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      const isValid = await bcrypt.compare(password, user.password);
+
+      if (!isValid) {
+        throw new Error('Not valid credentials');
+      }
+
+      const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
+        expiresIn: 60 * 60 * 24,
+      });
+
+      res.status(200).json({ message: 'Valid User', data: { email, token } });
+    } catch (err) {
+      res.status(400).json({ message: 'Unvalid Data', data: err });
+    }
+  },
+  /*
   async list(req, res) {
     try {
       const user = await User.find();
@@ -22,6 +75,7 @@ module.exports = {
       res.status(400).json(err);
     }
   },
+
   // post
 
   async create(req, res) {
@@ -35,6 +89,7 @@ module.exports = {
       res.status(400).json({ message: 'User could not be created', data: err });
     }
   },
+    */
   async update(req, res) {
     try {
       const data = req.body;

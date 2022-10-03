@@ -31,7 +31,7 @@ const UsersSchema = new Schema(
       type: String,
       required: [true, 'Debe ingresar una contraseña.'],
       minlength: [4, 'El password es muy corto'],
-      maxlength: [20, 'El password es muy largo'],
+      //maxlength: [20, 'El password es muy largo'],
     },
     rol: {
       type: String,
