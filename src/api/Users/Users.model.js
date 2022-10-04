@@ -45,8 +45,8 @@ const UsersSchema = new Schema(
       type: String,
       required: false,
     },
-    estadias: {
-      type: String,
+    reservations: {
+      type: [{type:Schema.Types.ObjectId,ref:'Reservations'}],
       required: false,
     },
     profileimg: {
