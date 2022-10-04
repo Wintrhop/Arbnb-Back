@@ -11,23 +11,23 @@ const reservationSchema = new Schema(
       required: true,
     },
     guests: {
-      type: {
-        adults: {
+      type:{
+        adults:{
           type: Number,
-          required: true,
+          required:true
         },
-        childs: {
+        childs:{
           type: Number,
-          required: false,
+          required: false
         },
-        babys: {
-          type: Number,
-          required: false,
+        babys:{
+          type:Number,
+          required:false
         },
-        pets: {
-          type: Number,
-          required: false,
-        },
+        prependListener:{
+          type:Number,
+          required:false
+        }
       },
       required: true
     },
@@ -45,6 +45,6 @@ const reservationSchema = new Schema(
   }
 );
 
-const Reservation = model('Reservation',reservationSchema)
+const Reservations = model('Reservations',reservationSchema)
 
-module.exports = Reservation
+module.exports = Reservations

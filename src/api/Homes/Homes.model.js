@@ -42,9 +42,10 @@ const homeSchema = new Schema(
             type: Number,
             required: [true, 'Debe ingresar el numero de habitaciones del inmueble.']
         },
-        reservations:{
-            // model reservations
-        }
+        reservations: {
+            type: [{type:Schema.Types.ObjectId,ref:'Reservations'}],
+            required: false,
+          },
     },
     {
         timestamps:true
