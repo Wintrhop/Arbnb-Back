@@ -24,7 +24,7 @@ module.exports = {
         expiresIn: 60 * 60 * 24,
       });
 
-      res.status(200).json({ message: 'User created', data: email, token });
+      res.status(200).json({ message: 'User created', data: token });
     } catch (err) {
       next(err);
     }
@@ -50,7 +50,7 @@ module.exports = {
         expiresIn: 60 * 60 * 24,
       });
 
-      res.status(200).json({ message: 'Valid User', data: { email, token } });
+      res.status(200).json({ message: 'Valid User', data: token });
     } catch (err) {
       res.status(400).json({ message: 'Unvalid Data', data: err });
     }
