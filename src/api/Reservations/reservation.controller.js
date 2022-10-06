@@ -1,4 +1,3 @@
-const { request } = require("express");
 const Homes = require("../Homes/Homes.model");
 const Users = require("../Users/Users.model");
 const Reservations = require("./reservation.model");
@@ -53,4 +52,38 @@ module.exports = {
       res.status(400).json({ message: "No reservation found", data: err });
     }
   },
+
+  async showHost(req,res){
+    try{
+        const user = await Users.findById(req.userId)
+        const finalArray = []
+
+        async function searchReservation(reservationId){
+            try{
+                const reservation = await Reservations.findById(reservationId)
+                finalArray.push(reservation)
+            } catch(err){
+                res.status(400).json({message:'no valid search',data:err})
+            }
+        }
+
+        async function searchHome(homeId){
+            try{
+                const home = await Homes.findById(homeId) 
+                home.reservations.forEach(item=>searchReservation(item))
+            } catch(err){
+                res.status(400).json({message:'no valid search',data:err})
+            }
+        }
+        
+        user.homes.forEach(item=>{
+            searchHome(item)
+        })
+
+        res.status(200).json({message:'reservation list for host found',data:finalArray})
+
+    } catch(err){
+        res.status(400).json({message:'Not possible to show host res',data:err})
+    }
+  }
 };

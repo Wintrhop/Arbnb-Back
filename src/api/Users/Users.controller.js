@@ -117,4 +117,5 @@ module.exports = {
       res.status(400).json({ Message: 'Home could not be Deleted', data: err });
     }
   },
+
 };
