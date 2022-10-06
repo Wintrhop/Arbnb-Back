@@ -53,6 +53,10 @@ const UsersSchema = new Schema(
       type: String,
       required: false,
     },
+    homes: {
+      type: [{type:Schema.Types.ObjectId,ref:'Homes'}],
+      required: false,
+    },
   },
   {
     timestamps: true,

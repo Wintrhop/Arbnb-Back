@@ -3,6 +3,10 @@ const priceRegex = new RegExp("^(0*[1-9][0-9]*([,.][0-9]+)?|0+\.[0-9]*[1-9][0-9]
 
 const homeSchema = new Schema(
     {
+        userId:{
+            type: Schema.Types.ObjectId,
+            required:true
+        },
         location: {
             type: String,
             required: [true, 'Debe ingresar donde se encuentra ubicado el inmueble.']

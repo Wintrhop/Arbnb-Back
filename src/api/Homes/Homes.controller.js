@@ -1,5 +1,6 @@
 const { create } = require("./Homes.model");
-const Homes= require("./Homes.model")
+const Homes= require("./Homes.model");
+const Users = require("../Users/Users.model");
 
 module.exports={
 
@@ -27,18 +28,21 @@ module.exports={
 
     async create(req, res){
         try {
-            // const {homeId}= req.params; // usuario id
+            const userId = req.userId
             const data= req.body;
-            // const home = await Homes.findById(homeId)// para usuario
+            const user = await Users.findById(userId)
             
-            // if (!home){
-            //     throw new Error("Home invalida")
-            // }
-            // const newHome= {
-            //     ...data,
-            // }
-            const home = await Homes.create(data);
-            //user push
+            if (!user){
+                throw new Error("Usuario invalido")
+            }
+            const newHome= {
+                ...data,
+                userId: userId
+            }
+            const home = await Homes.create(newHome);
+            
+            user.homes.push(home)
+            await user.save({ validateBeforeSave: false })
             
             res.status(201).json({message:"Home Created", data:home})
         } catch (err) {
