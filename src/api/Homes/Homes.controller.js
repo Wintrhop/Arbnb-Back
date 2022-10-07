@@ -6,7 +6,7 @@ module.exports = {
   //get all
   async list(req, res) {
     try {
-      const homes = await Homes.find().populate({path: "userId", select:" name email rol"})
+      const homes = await Homes.find().populate({path: "userId", select:"-_id name email rol"})
       res.status(201).json({ message: "Homes found", data: homes });
     } catch (err) {
       res.status(400).json(err);
@@ -16,7 +16,7 @@ module.exports = {
   async show(req, res) {
     try {
       const { homeId } = req.params;
-      const home = await Homes.findById(homeId).populate({path:'reservations', select:"-user -home"});
+      const home = await Homes.findById(homeId).populate({path:'reservations', select:"-user -home"}).populate({path: "userId", select:"-_id name email rol"});
       //populates
       res.status(201).json({ message: "Home found", data: home });
     } catch (err) {

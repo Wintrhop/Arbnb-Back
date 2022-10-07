@@ -6,6 +6,7 @@ const { connect } = require('./db');
 const homesRoute = require('./api/Homes/Homes.route');
 const userRoute = require('./api/Users/Users.route');
 const reservationRoute = require('./api/Reservations/reservation.route');
+const commentsRoute = require('./api/Comments/Comments.route')
 const { deleteModel, get } = require('mongoose');
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use('/homes', homesRoute);
 app.use('/user', userRoute);
 app.use('/reservations',reservationRoute);
+app.use('/comments', commentsRoute);
 
 
 app.listen(port, () => {

@@ -1,0 +1,10 @@
+const router = require("express").Router();
+const commentsController = require("./Comments.controller");
+const {auth} = require('../Utils/auth');
+const { Router } = require("express");
+
+router.route("/").get(commentsController.list)
+router.route("/:commentId").get(commentsController.show)
+router.route("/").post(auth,commentsController.create)
+router.route("/:commentId").put(auth,commentsController.update)
+router.route("/:commentId").delete(auth,commentsController.destroy)
