@@ -55,6 +55,6 @@ const messageSchema = new Schema(
   },
   { timestamps: true }
 );
-const Comments = model("Comments", homeSchema);
+const Comments = model("Comments", messageSchema);
 
 module.exports = Comments;
