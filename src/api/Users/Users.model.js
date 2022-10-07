@@ -57,6 +57,10 @@ const UsersSchema = new Schema(
       type: [{type:Schema.Types.ObjectId,ref:'Homes'}],
       required: false,
     },
+    comments:{
+      type:[{type:Schema.Types.ObjectId,ref:'Comments'}],
+      required: false,
+    }
   },
   {
     timestamps: true,
