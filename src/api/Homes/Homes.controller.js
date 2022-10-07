@@ -28,7 +28,7 @@ module.exports={
 
     async create(req, res){
         try {
-            const userId = req.userId
+            const userId = req.userId;
             const data= req.body;
             const user = await Users.findById(userId)
             
@@ -40,7 +40,7 @@ module.exports={
                 userId: userId
             }
             const home = await Homes.create(newHome);
-            
+            user.rol= "host";
             user.homes.push(home)
             await user.save({ validateBeforeSave: false })
             
