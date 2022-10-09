@@ -2,6 +2,7 @@ const { create } = require('./Users.model');
 const User = require('./Users.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { transporter, welcome } = require('../Utils/mailer');
 
 module.exports = {
   //get all
@@ -23,6 +24,10 @@ module.exports = {
       const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
         expiresIn: 60 * 60 * 24,
       });
+      console.log(
+        ` user: ${process.env.MAIL_USER}, pass: ${process.env.MAIL_PASSWORD}`,
+      );
+      await transporter.sendMail(welcome(newUser));
 
       res
         .status(200)
