@@ -3,6 +3,8 @@ const User = require('./Users.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { transporter, welcome } = require('../Utils/mailer');
+const Reservations = require('../Reservations/reservation.model')
+
 
 module.exports = {
   //get all
@@ -32,6 +34,7 @@ module.exports = {
       res
         .status(200)
         .json({ message: 'User created', data: { email: data.email, token } });
+
     } catch (err) {
       next(err);
     }
@@ -61,6 +64,7 @@ module.exports = {
       res
         .status(200)
         .json({ message: 'Valid User', data: { email, token, rol } });
+
     } catch (err) {
       res.status(400).json({ message: 'Unvalid Data', data: err });
     }
@@ -120,4 +124,5 @@ module.exports = {
       res.status(400).json({ Message: 'Home could not be Deleted', data: err });
     }
   },
+
 };
