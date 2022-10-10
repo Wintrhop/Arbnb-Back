@@ -1,5 +1,5 @@
 const { Schema, model, models } = require("mongoose");
-const scoreRegex = new RegExp("/[0-5]/");
+const scoreRegex = new RegExp("[0-5]");
 
 const messageSchema = new Schema(
   {
@@ -19,32 +19,33 @@ const messageSchema = new Schema(
     },
     score: {
       type: {
+        
         cleanliness: {
           type: Number,
           required: [true, "ingrese su calificacion de cleanliness"],
           match: [scoreRegex, "Ingrese un numero de 0 a 5"],
         },
-        Accuracy: {
+        accuracy: {
           type: Number,
           required: [true, "ingrese su calificacion de Accuracy"],
           match: [scoreRegex, "Ingrese un numero de 0 a 5"],
         },
-        Communication: {
+        communication: {
           type: Number,
           required: [true, "ingrese su calificacion de Communication"],
-          match: [scoreRegex, "Ingrese un numero de 0 a 5"],
+          match: [scoreRegex,"Ingrese un numero de 0 a 5"],
         },
-        Location: {
+        location: {
           type: Number,
           required: [true, "ingrese su calificacion de Location"],
           match: [scoreRegex, "Ingrese un numero de 0 a 5"],
         },
-        Checkin: {
+        checkin: {
           type: Number,
           required: [true, "ingrese su calificacion de Checkin"],
           match: [scoreRegex, "Ingrese un numero de 0 a 5"],
         },
-        Value: {
+        value: {
           type: Number,
           required: [true, "ingrese su calificacion de Value"],
           match: [scoreRegex, "Ingrese un numero de 0 a 5"],

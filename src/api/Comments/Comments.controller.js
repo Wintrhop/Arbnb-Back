@@ -2,21 +2,24 @@ const Comments = require("./Comments.model");
 const Users = require("../Users/Users.model");
 const Homes = require("../Homes/Homes.model");
 
-module.exports ={
-    //get all 
-    async list(req, res) {
-        try {
-          const comments = await Comments.find()
-          res.status(201).json({ message: "Comments found", data: comments });
-        } catch (err) {
-          res.status(400).json(err);
-        }
-      },
-      //getID
+module.exports = {
+  //get all
+  async list(req, res) {
+    try {
+      const comments = await Comments.find();
+      res.status(201).json({ message: "Comments found", data: comments });
+    } catch (err) {
+      res.status(400).json(err);
+    }
+  },
+  //getID
   async show(req, res) {
     try {
       const { commentId } = req.params;
-      const comment = await Comments.findById(commentId);
+      const comment = await Comments.findById(commentId).populate({
+        path: "userId",
+        select: "-_id name rol",
+      });
       //populates
       res.status(201).json({ message: "Comment found", data: comment });
     } catch (err) {
@@ -31,26 +34,60 @@ module.exports ={
       const { homeId } = req.params;
       const data = req.body;
       const user = await Users.findById(userId);
-      const home= await Homes.findById(homeId);
+      const home = await Homes.findById(homeId);
 
       if (!user) {
         throw new Error("Usuario invalido");
       }
+      if (!home) {
+        throw new Error("casa Invalida");
+      }
+     
+      let division = 2;
+      home.totalreviews = home.comments.length;
+      if (home.totalreviews < 2) {
+        division = 1;
+      }
+      
+      home.scorecleanliness =
+        parseFloat((home.scorecleanliness + data.score.cleanliness) / division).toFixed(2);
+      home.scoreaccuracy =
+        parseFloat((home.scoreaccuracy + data.score.accuracy) / division).toFixed(2);
+      home.scorecommunication =
+        parseFloat((home.scorecommunication + data.score.communication) / division).toFixed(2);
+      home.scorelocation =
+      parseFloat((home.scorelocation + data.score.location) / division).toFixed(2);
+      home.scorecheckin = 
+      parseFloat((home.scorecheckin + data.score.checkin) / division).toFixed(2);
+      home.scorevalue = 
+      parseFloat((home.scorevalue + data.score.value) / division).toFixed(2);
+
+      home.totalScore =
+       parseFloat((home.scorecleanliness +
+          home.scoreaccuracy +
+          home.scorecheckin +
+          home.scorecommunication +
+          home.scorelocation +
+          home.scorevalue) /
+        6).toFixed(2);
+
       const newComment = {
         ...data,
         userId: userId,
         homeId: homeId,
       };
       const comment = await Comments.create(newComment);
-      
+
       user.comments.push(comment);
       await user.save({ validateBeforeSave: false });
       home.comments.push(comment);
-      await home.save({validateBeforeSave: false });
+      await home.save({ validateBeforeSave: false });
 
-      res.status(201).json({ message: "Comment Created", data: home });
-    } catch (err) {
-      res.status(400).json({ message: "Comment could not be created", data: err });
+      res.status(201).json({ message: "Comment Created", data: comment });
+    } catch (error) {
+      res
+        .status(400)
+        .json({ message: "Comment could not be created", data: error });
     }
   },
   //update
@@ -82,10 +119,10 @@ module.exports ={
   //delete
   async destroy(req, res) {
     try {
-    const user = req.userId;
-    const { commentId } = req.params;
-    let { userId } = await Comments.findById(commentId);
-      
+      const user = req.userId;
+      const { commentId } = req.params;
+      let { userId } = await Comments.findById(commentId);
+
       if (userId._id.valueOf() !== user) {
         throw new Error("Usuario invalido");
       }
