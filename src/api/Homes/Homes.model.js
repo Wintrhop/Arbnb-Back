@@ -31,15 +31,50 @@ const homeSchema = new Schema(
       type: Array,
       required: [true, "Debe ingresar las comodidades del inmueble."],
     },
-    score: {
-      // model score obligatorio usuario y home
-    },
     capacity: {
       type: String,
       required: [true, "Debe ingresar la capacidad total del inmueble."],
     },
-    guests: {
-      // historial de huespedes
+    totalreviews: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+    totalScore: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+    
+    scorecleanliness: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+    scoreaccuracy: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+    scorecommunication: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+    scorelocation: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+    scorecheckin: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+    scorevalue: {
+      type: Number,
+      default: 0,
+      required: true,
     },
     dates: {
       type: String,
