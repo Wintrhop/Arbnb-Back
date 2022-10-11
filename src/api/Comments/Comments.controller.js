@@ -42,34 +42,45 @@ module.exports = {
       if (!home) {
         throw new Error("casa Invalida");
       }
-     
-      let division = 2;
-      home.totalreviews = home.comments.length;
-      if (home.totalreviews < 2) {
-        division = 1;
-      }
-      
-      home.scorecleanliness =
-        parseFloat((home.scorecleanliness + data.score.cleanliness) / division).toFixed(2);
-      home.scoreaccuracy =
-        parseFloat((home.scoreaccuracy + data.score.accuracy) / division).toFixed(2);
-      home.scorecommunication =
-        parseFloat((home.scorecommunication + data.score.communication) / division).toFixed(2);
-      home.scorelocation =
-      parseFloat((home.scorelocation + data.score.location) / division).toFixed(2);
-      home.scorecheckin = 
-      parseFloat((home.scorecheckin + data.score.checkin) / division).toFixed(2);
-      home.scorevalue = 
-      parseFloat((home.scorevalue + data.score.value) / division).toFixed(2);
+      const homeScore = home.scorearrays;
+      const commentScore = data.score;
 
-      home.totalScore =
-       parseFloat((home.scorecleanliness +
+      home.totalreviews = home.comments.length + 1;
+      homeScore.cleanlinessarray.push(commentScore.cleanliness);
+      homeScore.accuracyarray.push(commentScore.accuracy);
+      homeScore.communicationarray.push(commentScore.communication);
+      homeScore.locationarray.push(commentScore.location);
+      homeScore.checkinarray.push(commentScore.checkin);
+      homeScore.valuearray.push(commentScore.value);
+
+      home.scorecleanliness = parseFloat(
+        homeScore.cleanlinessarray.reduce((a, b) => a + b) / home.totalreviews
+      ).toFixed(2);
+      home.scoreaccuracy = parseFloat(
+        homeScore.accuracyarray.reduce((a, b) => a + b) / home.totalreviews
+      ).toFixed(2);
+      home.scorecommunication = parseFloat(
+        homeScore.communicationarray.reduce((a, b) => a + b) / home.totalreviews
+      ).toFixed(2);
+      home.scorelocation = parseFloat(
+        homeScore.locationarray.reduce((a, b) => a + b) / home.totalreviews
+      ).toFixed(2);
+      home.scorecheckin = parseFloat(
+        homeScore.checkinarray.reduce((a, b) => a + b) / home.totalreviews
+      ).toFixed(2);
+      home.scorevalue = parseFloat(
+        homeScore.valuearray.reduce((a, b) => a + b) / home.totalreviews
+      ).toFixed(2);
+
+      home.totalScore = parseFloat(
+        (home.scorecleanliness +
           home.scoreaccuracy +
           home.scorecheckin +
           home.scorecommunication +
           home.scorelocation +
           home.scorevalue) /
-        6).toFixed(2);
+          6
+      ).toFixed(2);
 
       const newComment = {
         ...data,

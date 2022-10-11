@@ -45,7 +45,32 @@ const homeSchema = new Schema(
       default: 0,
       required: false,
     },
-    
+    scorearrays: {
+      cleanlinessarray: {
+        type: Array,
+        required: false,
+      },
+      accuracyarray: {
+        type: Array,
+        required: false,
+      },
+      communicationarray: {
+        type: Array,
+        required: false,
+      },
+      locationarray: {
+        type: Array,
+        required: false,
+      },
+      checkinarray: {
+        type: Array,
+        required: false,
+      },
+      valuearray: {
+        type: Array,
+        required: false,
+      },
+    },
     scorecleanliness: {
       type: Number,
       default: 0,
