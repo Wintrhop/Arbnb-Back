@@ -147,8 +147,6 @@ module.exports = {
       const userCom = await Users.findById(userId);
       const homeCom = await Homes.findById(homeId);
 
-      console.log(typeof userId);
-
       const newUserComment = userCom.comments.filter(
         (item) => commentId !== item.toString()
       );

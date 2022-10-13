@@ -101,6 +101,10 @@ module.exports = {
       if (userId._id.valueOf() !== user) {
         throw new Error("Usuario invalido");
       }
+      const userHom = await Users.findById(userId);
+      const newHomes = userHom.homes.filter(item => homeId !== item.toString());
+      userHom.homes = newHomes;
+      await userHom.save({validateBeforeSave: false});
       const home = await Homes.findByIdAndDelete(homeId);
       res.status(200).json({ message: "Home Deleted", data: home });
     } catch (error) {
