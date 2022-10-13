@@ -11,16 +11,14 @@ const homeSchema = new Schema(
       required: true,
     },
     location: {
-      coordinates:{
+      coordinates: {
         type: Object,
         required: true,
-
       },
-      city:{
+      city: {
         type: String,
         required: true,
-      }
-      
+      },
     },
     price: {
       type: String,
