@@ -6,7 +6,10 @@ module.exports = {
   //get all
   async list(req, res) {
     try {
-      const comments = await Comments.find();
+      const comments = await Comments.find().populate({
+        path: "userId",
+        select: "-_id name",
+      });
       res.status(201).json({ message: "Comments found", data: comments });
     } catch (err) {
       res.status(400).json(err);
@@ -21,9 +24,12 @@ module.exports = {
         select: "-_id name rol",
       });
       //populates
+      if (!comment) {
+        throw new Error("Comment not found");
+      }
       res.status(201).json({ message: "Comment found", data: comment });
     } catch (err) {
-      res.status(400).json(err);
+      res.status(400).json({ message: "error", data: err.message });
     }
   },
   // post
@@ -98,7 +104,7 @@ module.exports = {
     } catch (error) {
       res
         .status(400)
-        .json({ message: "Comment could not be created", data: error });
+        .json({ message: "Comment could not be created", data: error.message });
     }
   },
   //update
@@ -124,7 +130,7 @@ module.exports = {
     } catch (error) {
       res
         .status(400)
-        .json({ message: "Comment could not be Updated", data: error });
+        .json({ message: "Comment could not be Updated", data: error.message });
     }
   },
   //delete
@@ -132,17 +138,34 @@ module.exports = {
     try {
       const user = req.userId;
       const { commentId } = req.params;
-      let { userId } = await Comments.findById(commentId);
+      let { userId, homeId } = await Comments.findById(commentId);
 
-      if (userId._id.valueOf() !== user) {
+      if (userId.toString() !== user) {
         throw new Error("Usuario invalido");
       }
+
+      const userCom = await Users.findById(userId);
+      const homeCom = await Homes.findById(homeId);
+
+      console.log(typeof userId);
+
+      const newUserComment = userCom.comments.filter(
+        (item) => commentId !== item.toString()
+      );
+      userCom.comments = newUserComment;
+      await userCom.save({ validateBeforeSave: false });
+      const newHomeComment = homeCom.comments.filter(
+        (item) => commentId !== item.toString()
+      );
+      homeCom.comments = newHomeComment;
+      await homeCom.save({ validateBeforeSave: false });
+
       const comment = await Comments.findByIdAndDelete(commentId);
       res.status(200).json({ message: "Comment Deleted", data: comment });
     } catch (error) {
       res
         .status(400)
-        .json({ Message: "Comment could not be Deleted", data: error });
+        .json({ Message: "Comment could not be Deleted", data: error.message });
     }
   },
 };
