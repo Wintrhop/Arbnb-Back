@@ -6,10 +6,6 @@ const reservationSchema = new Schema(
       type: Array,
       required: true,
     },
-    createDate:{
-      type: Date,
-      required: true
-    },
     price: {
       type: Number,
       required: true,
