@@ -11,8 +11,16 @@ const homeSchema = new Schema(
       required: true,
     },
     location: {
-      type: String,
-      required: [true, "Debe ingresar donde se encuentra ubicado el inmueble."],
+      coordinates:{
+        type: Object,
+        required: true,
+
+      },
+      city:{
+        type: String,
+        required: true,
+      }
+      
     },
     price: {
       type: String,
