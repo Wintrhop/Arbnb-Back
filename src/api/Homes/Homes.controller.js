@@ -32,10 +32,14 @@ module.exports = {
             select: "-_id name",
           },
         });
-      //populates
+      
+      if(!home){
+        throw new Error('Home not found');
+      }
       res.status(201).json({ message: "Home found", data: home });
-    } catch (err) {
-      res.status(400).json(err);
+    } catch (error) {
+      
+      res.status(400).json({message: "error", data: error.message});
     }
   },
   // post
@@ -60,7 +64,7 @@ module.exports = {
 
       res.status(201).json({ message: "Home Created", data: home });
     } catch (err) {
-      res.status(400).json({ message: "Home could not be created", data: err });
+      res.status(400).json({ message: "Home could not be created", data: err.message });
     }
   },
   async update(req, res) {
@@ -85,7 +89,7 @@ module.exports = {
     } catch (error) {
       res
         .status(400)
-        .json({ message: "Home could not be Updated", data: error });
+        .json({ message: "Home could not be Updated", data: error.message });
     }
   },
   async destroy(req, res) {
@@ -102,7 +106,7 @@ module.exports = {
     } catch (error) {
       res
         .status(400)
-        .json({ Message: "Home could not be Deleted", data: error });
+        .json({ Message: "Home could not be Deleted", data: error.message });
     }
   },
 };
