@@ -70,16 +70,22 @@ module.exports = {
         async function searchHome(homeId){
             try{
                 const home = await Homes.findById(homeId) 
-                home.reservations.forEach(item=>searchReservation(item))
+                await home.reservations.reduce((acum,next)=>{
+                    return acum.then(()=>{
+                        return searchReservation(next)
+                    })
+                },Promise.resolve())
             } catch(err){
                 res.status(400).json({message:'no valid search',data:err})
             }
         }
         
-        user.homes.forEach(item=>{
-            searchHome(item)
-        })
-
+        await user.homes.reduce((acum,next)=>{
+            return acum.then(()=>{
+                return searchHome(next)
+            })
+        },Promise.resolve())
+        
         res.status(200).json({message:'reservation list for host found',data:finalArray})
 
     } catch(err){
