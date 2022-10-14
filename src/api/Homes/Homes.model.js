@@ -110,7 +110,7 @@ const homeSchema = new Schema(
     dates: {
       type: String,
       required: [
-        true,
+        false,
         "Debe ingresar las fechas de disponibilidad del inmueble.",
       ],
     },
