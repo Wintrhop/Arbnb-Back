@@ -59,7 +59,7 @@ module.exports = {
       };
       const home = await Homes.create(newHome);
       user.rol = "host";
-      user.homes.push(home);
+      user.homes.push(home._id);
       await user.save({ validateBeforeSave: false });
 
       res.status(201).json({ message: "Home Created", data: home });
