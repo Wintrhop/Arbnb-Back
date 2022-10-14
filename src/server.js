@@ -22,6 +22,10 @@ app.use('/user', userRoute);
 app.use('/reservations',reservationRoute);
 app.use('/comments', commentsRoute);
 
+app.post('/prueba',formData,(req,res)=>{
+  res.status(200).json({...req.body})
+})
+
 
 app.listen(port, () => {
   console.log('Server Running Ok');
