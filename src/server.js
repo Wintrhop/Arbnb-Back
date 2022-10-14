@@ -7,8 +7,6 @@ const homesRoute = require('./api/Homes/Homes.route');
 const userRoute = require('./api/Users/Users.route');
 const reservationRoute = require('./api/Reservations/reservation.route');
 const commentsRoute = require('./api/Comments/Comments.route')
-const formData = require("./api/utils/formData")
-const { deleteModel, get } = require('mongoose');
 
 const app = express();
 const port = process.env.PORT;
@@ -22,10 +20,6 @@ app.use('/homes', homesRoute);
 app.use('/user', userRoute);
 app.use('/reservations',reservationRoute);
 app.use('/comments', commentsRoute);
-
-app.post('/prueba',formData,(req,res)=>{
-  res.status(200).json({...req.body})
-})
 
 
 app.listen(port, () => {
