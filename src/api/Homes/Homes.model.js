@@ -21,7 +21,7 @@ const homeSchema = new Schema(
       },
     },
     price: {
-      type: String,
+      type: Number,
       required: [true, "Debe ingresar un precio."],
       match: [priceRegex, "Ingrese un precio valido superior a 0.00"],
     },
@@ -30,7 +30,7 @@ const homeSchema = new Schema(
       required: false,
     },
     images: {
-      type: String,
+      type: Array,
       required: [true, "Debe ingresar las imagenes del inmueble."],
     },
     amenities: {
@@ -38,7 +38,7 @@ const homeSchema = new Schema(
       required: [true, "Debe ingresar las comodidades del inmueble."],
     },
     capacity: {
-      type: String,
+      type: Number,
       required: [true, "Debe ingresar la capacidad total del inmueble."],
     },
     totalreviews: {
