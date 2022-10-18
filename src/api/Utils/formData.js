@@ -38,8 +38,8 @@ const formData = (req,res,next)=>{
         location.coordinates.lng = parseFloat(
           valSplit[1].slice(0, valSplit[1].length - 1)
         );
-      } else if (key === "city") {
-        location.city = val;
+      } else if (key === "city" || key ==='country') {
+        location.city = location.city+val;
       } else if (key === 'amenities') {
           const valSplit = val.split(',')
           valSplit.forEach(item=>amenities.push(item))
