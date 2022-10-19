@@ -9,5 +9,6 @@ router.route("/").post(auth,formData,homesController.create)
 
 router.route("/:homeId").put(auth,homesController.update)
 router.route("/:homeId").delete(auth,homesController.destroy)
+router.route('/listings').get(auth,homesController.showUser)
 
 module.exports = router;
