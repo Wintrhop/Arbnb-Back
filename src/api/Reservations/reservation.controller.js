@@ -67,7 +67,7 @@ module.exports = {
           const reservation = await Reservations.findById(reservationId);
           finalArray.push(reservation);
         } catch (err) {
-          res.status(400).json({ message: "no valid search", data: err });
+          const e=err;
         }
       }
 
@@ -80,7 +80,7 @@ module.exports = {
             });
           }, Promise.resolve());
         } catch (err) {
-          res.status(400).json({ message: "no valid search", data: err });
+          const e=err;
         }
       }
 
