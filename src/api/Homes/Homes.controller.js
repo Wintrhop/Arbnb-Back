@@ -113,4 +113,27 @@ module.exports = {
         .json({ Message: "Home could not be Deleted", data: error.message });
     }
   },
+
+  //get users homes
+  async showUser (req,res) {
+    try{
+      const user = Users.findById(req.userId).populate({
+        path:'homes'
+      })
+
+      if(!user){
+        return res.status(400).json({message:'No user found'})
+      }
+
+      const showUser = {
+        ...user,
+      }
+
+      delete showUser._id
+
+      res.status(200).json({message:'homes found',data:showUser})
+    } catch(err){
+      res.status(400).json({message:'no hoes found',data:err})
+    }
+  }
 };
