@@ -117,7 +117,8 @@ module.exports = {
   //get users homes
   async showUser (req,res) {
     try{
-      const user = Users.findById(req.userId).populate({
+      const userId = req.userId
+      const user = await Users.findById(userId,'homes -_id').populate({
         path:'homes'
       })
 
@@ -125,13 +126,7 @@ module.exports = {
         return res.status(400).json({message:'No user found'})
       }
 
-      const showUser = {
-        ...user,
-      }
-
-      delete showUser._id
-
-      res.status(200).json({message:'homes found',data:showUser})
+      res.status(200).json({message:'homes found',data:user})
     } catch(err){
       res.status(400).json({message:'no hoes found',data:err})
     }
