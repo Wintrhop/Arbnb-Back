@@ -29,7 +29,7 @@ module.exports = {
           select: "message createdAt",
           populate: {
             path: "userId",
-            select: "-_id name",
+            select: "-_id name profileimg",
           },
         });
       
