@@ -26,7 +26,7 @@ module.exports = {
         .populate({ path: "reservations", select: "-user -home" })
         .populate({
           path: "comments",
-          select: "message",
+          select: "message createdAt",
           populate: {
             path: "userId",
             select: "-_id name",
