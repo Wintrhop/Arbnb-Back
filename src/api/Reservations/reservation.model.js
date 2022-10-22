@@ -36,13 +36,15 @@ const reservationSchema = new Schema(
       required: true
     },
     home:{
-        type: Schema.Types.ObjectId,
-        required: true
-    },
-    user:{
-        type: Schema.Types.ObjectId,
-        required:true
-    }
+      type: Schema.Types.ObjectId,
+      ref: 'Homes',
+      required: true
+  },
+  user:{
+      type: Schema.Types.ObjectId,
+      ref:'Users',
+      required:true
+  }
   },
   {
     timestamps: true,

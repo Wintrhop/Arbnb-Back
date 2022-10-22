@@ -59,46 +59,23 @@ module.exports = {
     }
   },
 
-  async showHost(req, res) {
-    try {
-      const user = await Users.findById(req.userId);
-      const finalArray = [];
-
-      async function searchReservation(reservationId) {
-        try {
-          const reservation = await Reservations.findById(reservationId);
-          finalArray.push(reservation);
-        } catch (err) {
-          const e=err;
+  async showHost (req,res){
+    try{
+      const user = await Users.findById(req.userId).select('homes -_id').populate({
+        path:'homes',
+        select:'_id reservations location',
+        populate: {
+          path: 'reservations',
+          populate: {
+            path: 'user',
+            select: 'profileimg name -_id'
+          }
         }
-      }
+      });
 
-      async function searchHome(homeId) {
-        try {
-          const home = await Homes.findById(homeId);
-          await home.reservations.reduce((acum, next) => {
-            return acum.then(() => {
-              return searchReservation(next);
-            });
-          }, Promise.resolve());
-        } catch (err) {
-          const e=err;
-        }
-      }
-
-      await user.homes.reduce((acum, next) => {
-        return acum.then(() => {
-          return searchHome(next);
-        });
-      }, Promise.resolve());
-
-      res
-        .status(200)
-        .json({ message: "reservation list for host found", data: finalArray });
-    } catch (err) {
-      res
-        .status(400)
-        .json({ message: "Not possible to show host res", data: err });
+      res.status(200).json({data:user})
+    } catch (err){
+      res.status(400).json({message:'no reservations found',data:err})
     }
   },
 };
