@@ -2,9 +2,13 @@ const { Schema, model } = require("mongoose");
 
 const reservationSchema = new Schema(
   {
-    date: {
-      type: Array,
+    initialDdate: {
+      type: Number,
       required: true,
+    },
+    finalDate:{
+      type: Number,
+      required:true
     },
     price: {
       type: Number,

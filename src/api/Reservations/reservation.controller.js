@@ -15,6 +15,8 @@ module.exports = {
         ...data,
         home: home,
         user: user,
+        initialDdate: Date.parse(data.date[0]),
+        finalDate: Date.parse(data.date[1])
       };
 
       const reservation = await Reservations.create(newReservation);
