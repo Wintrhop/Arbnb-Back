@@ -63,7 +63,7 @@ module.exports = {
       const rol = user.rol;
       res
         .status(200)
-        .json({ message: 'Valid User', data: { email, token, rol } });
+        .json({ message: 'Valid User', data: { email, token, rol,profileimg } });
 
     } catch (err) {
       res.status(400).json({ message: 'Unvalid Data', data: err });

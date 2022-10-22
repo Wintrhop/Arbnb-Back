@@ -130,5 +130,89 @@ module.exports = {
     } catch(err){
       res.status(400).json({message:'no hoes found',data:err})
     }
-  }
+  },
+
+  async listFilter(req, res) {
+    try {
+      const { coordinates, dates, people, flexRange } = req.body;
+      let reserve2 = []
+      
+      switch(flexRange){
+        case 'one':
+          reserve2 = [Date.parse(dates[0])+(1*24*60*60*1000),Date.parse(dates[1])-(1*24*60*60*1000)]
+        case 'three':
+          reserve2 = [Date.parse(dates[0])+(3*24*60*60*1000),Date.parse(dates[1])-(3*24*60*60*1000)]
+        case 'seven':
+          reserve2 = [Date.parse(dates[0])+(3*24*60*60*1000),Date.parse(dates[1])-(3*24*60*60*1000)]
+        case 'normal':
+          reserve2 = [Date.parse(dates[0]),Date.parse(dates[1])]   
+        default:
+          reserve2 = [Date.parse(dates[0]),Date.parse(dates[1])]  
+      }
+      
+      const respf =[];
+      const capacity = Object.values(people).reduce((a, b) => a + b, 0);
+      const bounds = {
+        north: coordinates[0] + 0.2,
+        south: coordinates[0] - 0.2,
+        east: coordinates[1] + 0.2,
+        west: coordinates[1] - 0.2,
+      };
+
+      const homes = await Homes.find()
+
+      async function searchReservation (resId,home){
+        try{ 
+          const reservation = await Reservations.findById(resId)
+          if (
+            !(reserve2[0] >= reservation.initialDdate && reserve2[0] <= reservation.finalDate) ||
+            !(reserve2[1] >= reservation.initialDdate && reserve2[1] <= reservation.finalDate)
+          ) {
+            home.filter = home.filter && true
+          } else {
+            home.filter = home.filter && false
+          }
+        } catch (err) {
+          const e = err
+        }
+      }
+
+      async function runReserve (home){
+        try{
+          home.filter = true
+          await home.reservations.reduce((acum, next) => {
+            return acum.then(() => {
+              return searchReservation(next,home);
+            });
+          }, Promise.resolve());
+        } catch(err){
+          const e = err
+        }
+      }
+
+      await homes.reduce((acum, next) => {
+        return acum.then(() => {
+          return runReserve(next);
+        });
+      }, Promise.resolve());
+
+
+      homes.forEach((item) => {
+        if (!(item.filter)) return 
+        if (
+          item.location.coordinates.lat < bounds.north &&
+          item.location.coordinates.lat > bounds.south &&
+          item.location.coordinates.lng < bounds.east &&
+          item.location.coordinates.lng > bounds.west &&
+          item.capacity >= capacity
+        ) {
+          respf.push(item);
+        }
+      });
+      
+      res.status(200).json({ message: "filter found", data: respf });
+    } catch (err) {
+      res.status(400).json({ message: "no filter applied", data: err });
+    }
+  },
 };
