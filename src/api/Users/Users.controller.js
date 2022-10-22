@@ -61,6 +61,7 @@ module.exports = {
       });
 
       const rol = user.rol;
+      const profileimg = user.profileimg;
       res
         .status(200)
         .json({ message: 'Valid User', data: { email, token, rol,profileimg } });
