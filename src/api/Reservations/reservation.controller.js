@@ -69,6 +69,10 @@ module.exports = {
           populate: {
             path: 'user',
             select: 'profileimg name -_id'
+          },
+          populate: {
+            path:'home',
+            select: "location"
           }
         }
       });
