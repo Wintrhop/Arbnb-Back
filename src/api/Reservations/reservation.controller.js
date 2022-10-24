@@ -67,12 +67,8 @@ module.exports = {
         populate: {
           path: 'reservations',
           populate: {
-            path: 'user',
-            select: 'profileimg name -_id'
-          },
-          populate: {
-            path:'home',
-            select: "location"
+            path: 'user home',
+            select: 'profileimg name -_id location'
           }
         }
       });
