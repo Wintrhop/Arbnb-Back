@@ -3,8 +3,7 @@ const User = require('./Users.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { transporter, welcome } = require('../Utils/mailer');
-const Reservations = require('../Reservations/reservation.model')
-
+const Reservations = require('../Reservations/reservation.model');
 
 module.exports = {
   //get all
@@ -34,7 +33,6 @@ module.exports = {
       res
         .status(200)
         .json({ message: 'User created', data: { email: data.email, token } });
-
     } catch (err) {
       next(err);
     }
@@ -62,12 +60,36 @@ module.exports = {
 
       const rol = user.rol;
       const profileimg = user.profileimg;
-      res
-        .status(200)
-        .json({ message: 'Valid User', data: { email, token, rol,profileimg } });
-
+      res.status(200).json({
+        message: 'Valid User',
+        data: { email, token, rol, profileimg },
+      });
     } catch (err) {
       res.status(400).json({ message: 'Unvalid Data', data: err });
+    }
+  },
+
+  async show(req, res) {
+    try {
+      const userId = req.userId;
+      const user = await User.findById(userId)
+        .select('-_id name ')
+        .populate({
+          path: 'reservations',
+          select: '-user -createdAt -updatedAt',
+          populate: {
+            path: 'home',
+            select: '-_id userId location  ',
+            populate: {
+              path: 'userId',
+              select: '-_id profileimg name ',
+            },
+          },
+        });
+      //populates
+      res.status(201).json({ message: 'user found', data: user });
+    } catch (err) {
+      res.status(400).json(err);
     }
   },
   /*
@@ -125,5 +147,4 @@ module.exports = {
       res.status(400).json({ Message: 'Home could not be Deleted', data: err });
     }
   },
-
 };
