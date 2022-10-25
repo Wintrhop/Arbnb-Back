@@ -79,7 +79,7 @@ module.exports = {
           select: '-user -createdAt -updatedAt',
           populate: {
             path: 'home',
-            select: '-_id userId location  ',
+            select: '_id userId location  ',
             populate: {
               path: 'userId',
               select: '-_id profileimg name ',
