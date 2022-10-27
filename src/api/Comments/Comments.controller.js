@@ -155,6 +155,7 @@ module.exports = {
       const newHomeComment = homeCom.comments.filter(
         (item) => commentId !== item.toString()
       );
+      homeCom.
       homeCom.comments = newHomeComment;
       await homeCom.save({ validateBeforeSave: false });
 
