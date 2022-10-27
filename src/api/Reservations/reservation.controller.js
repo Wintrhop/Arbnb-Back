@@ -21,10 +21,10 @@ module.exports = {
 
       const reservation = await Reservations.create(newReservation);
 
-      user.reservations.push(reservation);
+      user.reservations.push(reservation._id);
       await user.save({ validateBeforeSave: false });
 
-      home.reservations.push(reservation);
+      home.reservations.push(reservation._id);
       await home.save({ validateBeforeSave: false });
 
       res

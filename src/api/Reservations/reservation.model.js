@@ -6,51 +6,51 @@ const reservationSchema = new Schema(
       type: Number,
       required: true,
     },
-    finalDate:{
+    finalDate: {
       type: Number,
-      required:true
+      required: true,
     },
     price: {
       type: Number,
       required: true,
     },
     guests: {
-      type:{
-        adults:{
+      type: {
+        adults: {
           type: Number,
-          required:true
+          required: true,
         },
-        childs:{
+        childs: {
           type: Number,
-          required: false
+          required: false,
         },
-        babys:{
-          type:Number,
-          required:false
+        babys: {
+          type: Number,
+          required: false,
         },
-        prependListener:{
-          type:Number,
-          required:false
-        }
+        prependListener: {
+          type: Number,
+          required: false,
+        },
       },
-      required: true
+      required: true,
     },
-    home:{
+    home: {
       type: Schema.Types.ObjectId,
-      ref: 'Homes',
-      required: true
-  },
-  user:{
+      ref: "Homes",
+      required: true,
+    },
+    user: {
       type: Schema.Types.ObjectId,
-      ref:'Users',
-      required:true
-  }
+      ref: "Users",
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const Reservations = model('Reservations',reservationSchema)
+const Reservations = model("Reservations", reservationSchema);
 
-module.exports = Reservations
+module.exports = Reservations;
