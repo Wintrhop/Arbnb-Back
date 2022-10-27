@@ -23,7 +23,7 @@ module.exports = {
     try {
       const { homeId } = req.params;
       const home = await Homes.findById(homeId)
-        .populate({ path: "userId", select: "-_id name email rol profileimg" })
+        .populate({ path: "userId", select: "-_id name email rol profileimg createdAt" })
         .populate({ path: "reservations", select: "-user -home" })
         .populate({
           path: "comments",
